@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "projectSoc",
-    "slug": "projectSoc",
+    "name": "ProjectSocApp",
+    "slug": "ProjectSocApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

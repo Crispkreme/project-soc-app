@@ -1,1 +1,0 @@
-# project-soc-app
