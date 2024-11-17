@@ -31,7 +31,7 @@ const Login = ({ navigation }) => {
       if (response.data.success) {
         Alert.alert('Success', 'Login successful!');
         // Redirect to Main screen if login is successful
-        navigation.navigate('Main');
+        navigation.navigate('Dashboard');
       } else {
         Alert.alert('Error', response.data.message || 'Invalid credentials');
       }
