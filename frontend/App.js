@@ -7,6 +7,7 @@ import Login from './app/pages/Login';
 import Update from './app/pages/Update';
 import Dashboard from './app/pages/Dashboard';
 import Profile from './app/pages/Dashboard';
+import './global.css';
 
 const Stack = createStackNavigator();
 
