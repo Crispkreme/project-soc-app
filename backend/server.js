@@ -162,28 +162,6 @@ app.post("/logout", (req, res) => {
   return res.json({ success: true, message: "Logged out successfully" });
 });
 
-// app.get("/check-login", async (req, res) => {
-//   if (req.cookies.auth_token) {
-//     try {
-//       const user = await getUserByAuthToken(req.cookies.auth_token);
-//       console.log(user);
-//       if (user) {
-//         res.json({
-//           success: true,
-//           userId: user.id,
-//         });
-//       } else {
-//         res.json({ success: false });
-//       }
-//     } catch (error) {
-//       console.error("Error fetching user:", error);
-//       res.json({ success: false });
-//     }
-//   } else {
-//     res.json({ success: false });
-//   }
-// });
-
 app.get("/check-login", async (req, res) => {
     if (req.cookies.auth_token) {
       try {

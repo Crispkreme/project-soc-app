@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'rea
 import UserTable from './UserTable';
 
 const Dashboard = ({ navigation, route }) => {
-
+  
   const [userArray, setUserArray] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedInUserId, setLoggedInUserId] = useState(null);

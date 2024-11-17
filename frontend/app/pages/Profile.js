@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 
 const Profile = ({ navigation, route }) => {
+
+  const { id } = route.params;
+  
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -9,7 +12,7 @@ const Profile = ({ navigation, route }) => {
     const fetchUserProfile = async () => {
       setLoading(true);
       try {
-        const userId = route.params?.id; // Assume the `id` is passed via navigation
+        const userId = route.params?.id;
         const response = await fetch(`http://192.168.1.37:3000/profile/${userId}`, {
           method: 'GET',
           credentials: 'include',
@@ -51,7 +54,6 @@ const Profile = ({ navigation, route }) => {
     <View style={styles.container}>
       {userProfile ? (
         <>
-          <Text style={styles.header}>My Profile</Text>
           <Text style={styles.label}>Name:</Text>
           <Text style={styles.value}>{userProfile.name}</Text>
           <Text style={styles.label}>Email:</Text>
