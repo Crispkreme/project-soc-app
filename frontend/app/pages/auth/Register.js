@@ -1,77 +1,69 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { TextInput, Button, IconButton, TouchableRipple } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import tw from 'tailwind-react-native-classnames';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const Register = () => {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', birthday: '' });
   const [showPassword, setShowPassword] = useState(false);
-  const navigation = useNavigation();
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
+  const navigation = useNavigation();
 
-  // Handle input changes
   const handleInputChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
   };
 
-  // Handle submit button press
   const addUser = () => {
-    // Add user logic here
-    // After user data is added, navigate to ConfirmPassword screen
     navigation.navigate('ConfirmPassword');
   };
 
-  // Handle date change
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(false);
     setDate(currentDate);
   };
 
-  // Open the date picker
   const showDatepicker = () => {
     setShow(true);
   };
 
   return (
-    <View className='flex-1 p-5'>
-      <View className='mb-5'>
-        <Text className='text-3xl font-bold'>Welcome</Text>
-        <Text className='text-sm text-gray-500 mt-1'>
-          Ai-Timan is a comprehensive application that could benefit both healthcare providers and patients in barangay health centers.
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Welcome</Text>
+        <Text style={styles.subtitle}>
+          Ai-Timan is a comprehensive application that could benefit both healthcare providers
+          and patients in barangay health centers.
         </Text>
       </View>
 
-      <ScrollView contentContainerStyle={tw('flex-grow')}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
         <TextInput
           label="Full Name"
           value={formData.name}
           onChangeText={(value) => handleInputChange('name', value)}
           keyboardType="default"
-          className='mb-4'
+          style={styles.input}
         />
         <TextInput
           label="Email"
           value={formData.email}
           onChangeText={(value) => handleInputChange('email', value)}
           keyboardType="email-address"
-          className='mb-4'
+          style={styles.input}
         />
         <TextInput
           label="Phone Number"
           value={formData.phone}
           onChangeText={(value) => handleInputChange('phone', value)}
           keyboardType="phone-pad"
-          className='mb-4'
+          style={styles.input}
         />
-        <Text className='text-lg mb-4'>Selected Date: {date.toLocaleDateString()}</Text>
-        <TouchableOpacity
-          onPress={showDatepicker}
-          className='bg-blue-500 p-4 rounded-md'
-        >
-          <Text className='text-white text-center'>Select Date</Text>
+        <Text style={styles.dateText}>Selected Date: {date.toLocaleDateString()}</Text>
+        <TouchableOpacity onPress={showDatepicker} style={styles.dateButton}>
+          <Text style={styles.dateButtonText}>Select Date</Text>
         </TouchableOpacity>
 
         {show && (
@@ -83,55 +75,122 @@ const Register = () => {
             onChange={onChange}
           />
         )}
-        <Text className='text-center my-3'>
+        <Text style={styles.agreementText}>
           By continuing, you agree to{' '}
           <TouchableRipple onPress={() => navigation.navigate('Terms')}>
-            <Text className='text-blue-500'>Terms of Use</Text>
+            <Text style={styles.linkText}>Terms of Use</Text>
           </TouchableRipple>{' '}
           and{' '}
           <TouchableRipple onPress={() => navigation.navigate('PrivacyPolicy')}>
-            <Text className='text-blue-500'>Privacy Policy</Text>
+            <Text style={styles.linkText}>Privacy Policy</Text>
           </TouchableRipple>.
         </Text>
 
-        <Button mode="contained" onPress={addUser} className='mb-5'>
+        <Button mode="contained" onPress={addUser} style={styles.signupButton}>
           Sign Up
         </Button>
 
-        <Text className='text-center my-3'>or sign up with</Text>
+        <Text style={styles.orText}>or sign up with</Text>
 
-        <View className='flex-row justify-around mb-5'>
+        <View style={styles.socialButtonsContainer}>
           <IconButton
             icon="google"
             size={30}
             color="white"
-            className='bg-blue-500'
-            onPress={() => navigation.navigate('Register')}
+            style={[styles.socialButton, { backgroundColor: '#4285F4' }]}
           />
           <IconButton
             icon="facebook"
             size={30}
             color="white"
-            className='bg-blue-700'
-            onPress={() => navigation.navigate('Register')}
+            style={[styles.socialButton, { backgroundColor: '#3B5998' }]}
           />
           <IconButton
             icon="fingerprint"
             size={30}
             color="white"
-            className='bg-gray-600'
-            onPress={() => navigation.navigate('Register')}
+            style={[styles.socialButton, { backgroundColor: '#6B7280' }]}
           />
         </View>
 
         <TouchableRipple onPress={() => navigation.navigate('Login')}>
-          <Text className='text-center text-blue-500'>
-            Already have an account? Log in
-          </Text>
+          <Text style={styles.loginText}>Already have an account? Log in</Text>
         </TouchableRipple>
       </ScrollView>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#ffffff',
+  },
+  header: {
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#000000',
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#6B7280', // Gray-500 equivalent
+    marginTop: 8,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+  },
+  input: {
+    marginBottom: 16,
+  },
+  dateText: {
+    fontSize: 16,
+    marginBottom: 16,
+  },
+  dateButton: {
+    backgroundColor: '#3B82F6', // Blue-500 equivalent
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  dateButtonText: {
+    color: '#ffffff',
+    fontSize: 16,
+  },
+  agreementText: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginVertical: 16,
+  },
+  linkText: {
+    color: '#3B82F6',
+  },
+  signupButton: {
+    marginBottom: 16,
+  },
+  orText: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  socialButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 20,
+  },
+  socialButton: {
+    padding: 10,
+    borderRadius: 30,
+  },
+  loginText: {
+    textAlign: 'center',
+    color: '#3B82F6',
+    fontSize: 16,
+  },
+});
 
 export default Register;
