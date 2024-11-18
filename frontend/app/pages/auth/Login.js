@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { TextInput, Button, IconButton, TouchableRipple } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
@@ -8,18 +8,13 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
 
-  // Handle input changes
   const handleInputChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
   };
 
-  // Handle submit button press
   const addUser = () => {
     if (formData.email && formData.password) {
-      // Perform login logic (e.g., API call)
       console.log('Logged in:', formData);
-
-      // Navigate to Main screen
       navigation.navigate('Main');
     } else {
       alert('Please fill in all fields.');
@@ -27,21 +22,22 @@ const Login = () => {
   };
 
   return (
-    <View className="flex-1 p-5">
-      <View className="mb-5">
-        <Text className="text-3xl font-bold">Welcome</Text>
-        <Text className="text-sm text-gray-500 mt-1">
-          Ai-Timan is a comprehensive application that could benefit both healthcare providers and patients in barangay health centers.
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Welcome</Text>
+        <Text style={styles.subtitle}>
+          Ai-Timan is a comprehensive application that could benefit both healthcare providers
+          and patients in barangay health centers.
         </Text>
       </View>
 
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
         <TextInput
           label="Email"
           value={formData.email}
           onChangeText={(value) => handleInputChange('email', value)}
           keyboardType="email-address"
-          className="mb-4"
+          style={styles.input}
         />
 
         <TextInput
@@ -49,50 +45,107 @@ const Login = () => {
           value={formData.password}
           onChangeText={(value) => handleInputChange('password', value)}
           secureTextEntry={!showPassword}
-          className="mb-4"
-          right={<TextInput.Icon name={showPassword ? 'eye' : 'eye-off'} onPress={() => setShowPassword(!showPassword)} />}
+          style={styles.input}
+          right={
+            <TextInput.Icon
+              name={showPassword ? 'eye' : 'eye-off'}
+              onPress={() => setShowPassword(!showPassword)}
+            />
+          }
         />
 
         <TouchableRipple onPress={() => navigation.navigate('ForgetPassword')}>
-          <Text className="text-right text-blue-500 text-sm">Forget Password?</Text>
+          <Text style={styles.forgotPassword}>Forget Password?</Text>
         </TouchableRipple>
 
-        <Button mode="contained" onPress={addUser} className="mb-4">
+        <Button mode="contained" onPress={addUser} style={styles.submitButton}>
           Submit
         </Button>
 
-        <Text className="text-center my-3">or sign up with</Text>
+        <Text style={styles.orText}>or sign up with</Text>
 
-        <View className="flex-row justify-around mb-5">
+        <View style={styles.socialButtonsContainer}>
           <IconButton
             icon="google"
             size={30}
             color="white"
-            className="bg-blue-500"
-            onPress={() => navigation.navigate('Register')}
+            style={[styles.socialButton, { backgroundColor: '#4285F4' }]}
           />
           <IconButton
             icon="facebook"
             size={30}
             color="white"
-            className="bg-blue-700"
-            onPress={() => navigation.navigate('Register')}
+            style={[styles.socialButton, { backgroundColor: '#3B5998' }]}
           />
           <IconButton
             icon="fingerprint"
             size={30}
             color="white"
-            className="bg-gray-600"
-            onPress={() => navigation.navigate('Register')}
+            style={[styles.socialButton, { backgroundColor: '#6B7280' }]}
           />
         </View>
 
         <TouchableRipple onPress={() => navigation.navigate('Register')}>
-          <Text className="text-center text-blue-500">Don’t have an account? Sign Up</Text>
+          <Text style={styles.registerText}>Don’t have an account? Sign Up</Text>
         </TouchableRipple>
       </ScrollView>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#ffffff',
+  },
+  header: {
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#000000',
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#6B7280',
+    marginTop: 8,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+  },
+  input: {
+    marginBottom: 16,
+  },
+  forgotPassword: {
+    textAlign: 'right',
+    color: '#3B82F6',
+    fontSize: 14,
+    marginBottom: 16,
+  },
+  submitButton: {
+    marginBottom: 16,
+  },
+  orText: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  socialButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 20,
+  },
+  socialButton: {
+    padding: 10,
+    borderRadius: 30,
+  },
+  registerText: {
+    textAlign: 'center',
+    color: '#3B82F6',
+    fontSize: 16,
+  },
+});
 
 export default Login;

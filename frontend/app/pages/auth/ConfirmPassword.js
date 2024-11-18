@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
@@ -9,12 +9,10 @@ const ConfirmPassword = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigation = useNavigation();
 
-  // Handle input changes
   const handleInputChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
   };
 
-  // Handle submit button press
   const handleSubmit = () => {
     if (formData.password === formData.confirm_password) {
       navigation.navigate('Main');
@@ -24,21 +22,21 @@ const ConfirmPassword = () => {
   };
 
   return (
-    <View className="flex-1 p-5">
-      <View className="mb-5">
-        <Text className="text-3xl font-bold">Confirm Password</Text>
-        <Text className="text-sm text-gray-500 mt-1">
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Confirm Password</Text>
+        <Text style={styles.subtitle}>
           Please confirm your password to complete the registration process.
         </Text>
       </View>
 
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
         <TextInput
           label="Password"
           value={formData.password}
           onChangeText={(value) => handleInputChange('password', value)}
           secureTextEntry={!showPassword}
-          className="mb-4"
+          style={styles.input}
           right={
             <TextInput.Icon
               name={showPassword ? 'eye' : 'eye-off'}
@@ -52,7 +50,7 @@ const ConfirmPassword = () => {
           value={formData.confirm_password}
           onChangeText={(value) => handleInputChange('confirm_password', value)}
           secureTextEntry={!showConfirmPassword}
-          className="mb-4"
+          style={styles.input}
           right={
             <TextInput.Icon
               name={showConfirmPassword ? 'eye' : 'eye-off'}
@@ -61,12 +59,42 @@ const ConfirmPassword = () => {
           }
         />
 
-        <Button mode="contained" onPress={handleSubmit} className="mb-5">
+        <Button mode="contained" onPress={handleSubmit} style={styles.submitButton}>
           Sign Up
         </Button>
       </ScrollView>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#ffffff',
+  },
+  header: {
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#000000',
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#6B7280',
+    marginTop: 8,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+  },
+  input: {
+    marginBottom: 16,
+  },
+  submitButton: {
+    marginTop: 16,
+  },
+});
 
 export default ConfirmPassword;

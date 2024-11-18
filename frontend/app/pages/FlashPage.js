@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import SvgUri from 'react-native-svg';
+import { SvgUri } from 'react-native-svg';
+import Logo from '../../assets/Logo.svg';
 
 const FlashPage = () => {
   const navigation = useNavigation();
@@ -11,27 +12,52 @@ const FlashPage = () => {
       navigation.navigate('WelcomeScreen');
     }, 5000);
 
-    return () => clearTimeout(timer); 
+    return () => clearTimeout(timer);
   }, [navigation]);
 
   return (
-    <View className="flex-1 bg-white items-center justify-center">
-
-      <ScrollView contentContainerStyle="flex-grow items-center justify-center">
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
         <SvgUri
           width={150}
           height={150}
-          uri={require('../../assets/Logo.svg')}
-          className="mb-5"
+          uri={Logo}
+          style={styles.logo}
         />
-        <Text className="text-lg font-medium text-gray-600 text-center">Ai-Timan:</Text>
-        <Text className="text-lg font-medium text-gray-600 text-center">
-          Streamlining Outpatient Care
-        </Text>
+        <Text style={styles.title}>Ai-Timan:</Text>
+        <Text style={styles.subtitle}>Streamlining Outpatient Care</Text>
       </ScrollView>
-      
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logo: {
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#4B5563',
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#4B5563',
+    textAlign: 'center',
+  },
+});
 
 export default FlashPage;

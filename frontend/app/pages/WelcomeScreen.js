@@ -1,49 +1,104 @@
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import SvgUri from 'react-native-svg';
+import { SvgUri } from 'react-native-svg';
+import Logo from '../../assets/Logo.svg';
 
 const WelcomeScreen = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
 
-    return (
-        <View className="flex-1 bg-white">
-            <ScrollView 
-                contentContainerStyle="flex-grow items-center justify-center"
-                showsVerticalScrollIndicator={false}
-            >
-                <SvgUri
-                    width={150}
-                    height={150}
-                    uri={require('../../assets/Logo.svg')}
-                    className="mb-5"
-                />
-                <Text className="text-lg font-medium text-gray-600 text-center">Ai-Timan:</Text>
-                <Text className="text-lg font-medium text-gray-600 text-center">
-                    Streamlining Outpatient Care
-                </Text>
-            </ScrollView>
+  return (
+    <View style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+      >
+        <SvgUri
+          width={150}
+          height={150}
+          uri={Logo}
+          style={styles.logo}
+        />
+        <Text style={styles.title}>Ai-Timan:</Text>
+        <Text style={styles.subtitle}>Streamlining Outpatient Care</Text>
+      </ScrollView>
 
-            <View className="flex-1 justify-end w-full">
-                <View className="w-full px-6 mb-2">
-                    <TouchableOpacity 
-                        onPress={() => navigation.navigate('Login')} 
-                        className="bg-blue-500 rounded-full px-6 py-3 w-full"
-                    >
-                        <Text className="text-white font-medium text-center">Login</Text>
-                    </TouchableOpacity>
-                </View>
-                <View className="w-full px-6 mb-6">
-                    <TouchableOpacity 
-                        onPress={() => navigation.navigate('Register')} 
-                        className="bg-green-500 rounded-full px-6 py-3 w-full"
-                    >
-                        <Text className="text-white font-medium text-center">Register</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+      <View style={styles.footer}>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Login')}
+            style={[styles.button, styles.loginButton]}
+          >
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
         </View>
-    );
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Register')}
+            style={[styles.button, styles.registerButton]}
+          >
+            <Text style={styles.buttonText}>Register</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logo: {
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#4B5563',
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#4B5563',
+    textAlign: 'center',
+  },
+  footer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    width: '100%',
+    paddingHorizontal: 24,
+    marginBottom: 16,
+  },
+  buttonContainer: {
+    width: '100%',
+    marginBottom: 12,
+  },
+  button: {
+    borderRadius: 9999,
+    paddingVertical: 12,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loginButton: {
+    backgroundColor: '#3B82F6',
+  },
+  registerButton: {
+    backgroundColor: '#10B981',
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontWeight: '500',
+    textAlign: 'center',
+  },
+});
 
 export default WelcomeScreen;
