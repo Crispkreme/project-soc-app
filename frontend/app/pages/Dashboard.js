@@ -11,7 +11,7 @@ const Dashboard = ({ navigation, route }) => {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await fetch('http://192.168.1.37:3000/check-login', {
+        const response = await fetch('http://192.168.127.145:3000/check-login', {
           method: 'GET',
           credentials: 'include',
         });
@@ -59,7 +59,7 @@ const Dashboard = ({ navigation, route }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://192.168.1.37:3000/users', {
+        const response = await fetch('http://192.168.127.145:3000/users', {
           method: 'GET',
           credentials: 'include',
         });
@@ -84,7 +84,7 @@ const Dashboard = ({ navigation, route }) => {
   const handleDelete = async (index) => {
     try {
       const userId = userArray[index]._id;
-      const response = await fetch(`http://192.168.1.37:3000/delete-user/${userId}`, {
+      const response = await fetch(`http://192.168.127.145:3000/delete-user/${userId}`, {
         method: 'DELETE',
         credentials: 'include',
       });
@@ -106,7 +106,7 @@ const Dashboard = ({ navigation, route }) => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://192.168.1.37:3000/logout', {
+      const response = await fetch('http://192.168.127.145:3000/logout', {
         method: 'POST',
         credentials: 'include',
       });

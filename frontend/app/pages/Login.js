@@ -23,7 +23,7 @@ const Login = ({ navigation }) => {
 
     try {
       // Sending login data to the backend
-      const response = await axios.post('http://192.168.1.37:3000/login', {
+      const response = await axios.post('http://192.168.127.145:3000/login', {
         email: formData.email,
         password: formData.password,
       });

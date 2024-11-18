@@ -30,7 +30,7 @@ const Register = ({ navigation }) => {
     }
 
     try {
-      const response = await axios.post('http://192.168.1.37:3000/register', {
+      const response = await axios.post('http://192.168.127.145:3000/register', {
         name: formData.name,
         email: formData.email,
         password: formData.password,

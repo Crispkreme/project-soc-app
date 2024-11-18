@@ -17,7 +17,7 @@ const Main = ({ navigation, route }) => {
       if (!isLoggedIn) {
         navigation.reset({
           index: 0,
-          routes: [{ name: 'Login' }],
+          routes: [{ name: 'Register' }],
         });
       }
     }, [isLoggedIn])
@@ -25,7 +25,7 @@ const Main = ({ navigation, route }) => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://192.168.1.37:3000/logout', {
+      const response = await fetch('http://192.168.127.145:3000/logout', {
         method: 'POST',
         credentials: 'include',
       });

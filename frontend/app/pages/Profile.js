@@ -13,7 +13,7 @@ const Profile = ({ navigation, route }) => {
       setLoading(true);
       try {
         const userId = route.params?.id;
-        const response = await fetch(`http://192.168.1.37:3000/profile/${userId}`, {
+        const response = await fetch(`http://192.168.127.145:3000/profile/${userId}`, {
           method: 'GET',
           credentials: 'include',
         });
