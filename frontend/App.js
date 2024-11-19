@@ -3,6 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Main from './app/pages/Main';
+import Appointment from './app/pages/Appointment';
+import BookAppointment from './app/pages/BookAppointment';
 import FlashPage from './app/pages/FlashPage';
 import WelcomeScreen from './app/pages/WelcomeScreen';
 
@@ -24,6 +26,8 @@ export default function App() {
                 <Stack.Screen name="Register" component={Register} />
                 <Stack.Screen name="ConfirmPassword" component={ConfirmPassword} />
                 <Stack.Screen name="Main" component={Main} />
+                <Stack.Screen name="Appointment" component={Appointment} />
+                <Stack.Screen name="BookAppointment" component={BookAppointment} />
             </Stack.Navigator>
         </NavigationContainer>
     );

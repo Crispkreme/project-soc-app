@@ -1,46 +1,55 @@
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import SvgUri from 'react-native-svg';
+import { View, ScrollView, StyleSheet, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Logo from '../../assets/Logo.svg'; // Replace with your logo path.
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import Chart from '../components/Chart';
+import Calendar from '../components/Calendar';
+import Event from '../components/Event';
+
+const screenWidth = Dimensions.get('window').width;
 
 const Main = () => {
   const navigation = useNavigation();
 
+  const chartDataIllness = {
+    labels: ['Cough', 'Flu', 'Diarrhea', 'Diabetes', 'Highblood'],
+    datasets: [
+      {
+        data: [20, 45, 28, 80, 99],
+      },
+    ],
+  };
+
+  const chartDataMedicine = {
+    labels: ['Lozartan', 'Biogesic', 'Paracetamol'],
+    datasets: [
+      {
+        data: [20, 45, 28],
+      },
+    ],
+  };
+
+  const dates = ['9 MON', '10 TUE', '11 WED', '12 THU', '13 FRI', '14 SAT'];
+  const doctorSchedule = [
+    'Dental and General Check Up',
+    'Dr. Sam Gonzales MD',
+    'April 29, 2024 Mon 8AM - 3PM',
+  ];
+
   return (
     <View style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Profile and Button Group in 1 Row */}
-        <View style={styles.row}>
-          {/* Profile Section */}
-          <View style={styles.profileContainer}>
-            <View style={styles.logoContainer}>
-              <SvgUri width={100} height={100} uri={Logo} />
-            </View>
-            <Text style={styles.title}>Hi, Welcome Back</Text>
-            <Text style={styles.subtitle}>John Doe</Text>
-          </View>
+      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+        <Header />
 
-          {/* Button Group Section */}
-          <View style={styles.buttonGroup}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Bell')}
-              style={[styles.button, styles.bellButton]}
-            >
-              <Text style={styles.buttonText}>Bell</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Settings')}
-              style={[styles.button, styles.settingsButton]}
-            >
-              <Text style={styles.buttonText}>Settings</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        
+        <Calendar dates={dates} />
+
+        <Event event={doctorSchedule} />
+
+        <Chart title="Common Illness" data={chartDataIllness} />
+        <Chart title="In Demand Medicine" data={chartDataMedicine} />
+
+        <Footer />
       </ScrollView>
     </View>
   );
@@ -54,62 +63,32 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    justifyContent: 'center',
   },
-  row: {
-    flexDirection: 'row', // Align profile and button group horizontally
-    justifyContent: 'space-between',
-    alignItems: 'center', // Vertically center both sections
-    marginBottom: 20,
+  chartContainer: {
+    marginTop: 20,
   },
-  profileContainer: {
-    alignItems: 'center',
-    marginRight: 16, // Adds space between profile and button group
-  },
-  buttonGroup: {
-    flexDirection: 'row', // Make buttons align horizontally in a row
-    alignItems: 'center',
-  },
-  logoContainer: {
-    width: 100, // Smaller width for the profile picture
-    height: 100, // Smaller height for the profile picture
-    borderRadius: 50, // Makes the image rounded
-    overflow: 'hidden',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f0f0f0', // Optional background if the logo has transparency
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 24,
+  chartTitle: {
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#000',
+    marginBottom: 8,
     textAlign: 'center',
   },
-  subtitle: {
-    fontSize: 16,
-    color: '#6B7280',
-    textAlign: 'center',
-    marginTop: 8,
+  chart: {
+    borderRadius: 8,
   },
-  button: {
-    width: 60, // Width and height should be the same for a circular button
-    height: 60,
-    justifyContent: 'center',
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+    backgroundColor: '#f9f9f9',
+  },
+  footerItem: {
     alignItems: 'center',
-    borderRadius: 30, // Makes the button circular
-    marginHorizontal: 10, // Adds space between buttons
   },
-  bellButton: {
-    backgroundColor: '#4F46E5', // Indigo color
-  },
-  settingsButton: {
-    backgroundColor: '#10B981', // Green color
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#ffffff',
+  navText: {
+    marginTop: 4,
+    fontSize: 12,
+    color: '#4F46E5',
   },
 });
 
