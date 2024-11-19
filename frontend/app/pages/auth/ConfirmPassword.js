@@ -1,23 +1,58 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import axios from 'axios';
+import InfoModal from '../../components/InfoModal';
 
 const ConfirmPassword = () => {
-  const [formData, setFormData] = useState({ password: '', confirm_password: '' });
+  const navigation = useNavigation();
+  const route = useRoute();
+
+  const initialFormData = route.params?.formData || {};
+
+  const [formData, setFormData] = useState({ ...initialFormData, password: '', confirm_password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const navigation = useNavigation();
+  const [isDialogVisible, setDialogVisible] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState('');
+  const [dialogType, setDialogType] = useState('success');
+
+  const closeDialog = () => {
+    setDialogVisible(false);
+    if (dialogType === 'success') {
+      navigation.navigate('Login');
+    }
+  };
 
   const handleInputChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (formData.password === formData.confirm_password) {
-      navigation.navigate('Main');
+      try {
+        const response = await axios.post('http://10.0.120.55:3000/register', {
+          name: formData.name,
+          age: formData.age,
+          phone: formData.phone,
+          birthday: formData.birthday,
+          password: formData.password,
+          email: formData.email,
+        });
+
+        setDialogMessage(response.data.message || 'User created successfully!');
+        setDialogType('success');
+        setDialogVisible(true);
+      } catch (error) {
+        setDialogMessage('Failed to add user. Please try again.');
+        setDialogType('error');
+        setDialogVisible(true);
+      }
     } else {
-      alert('Passwords do not match!');
+      setDialogMessage('Passwords do not match!');
+      setDialogType('error');
+      setDialogVisible(true);
     }
   };
 
@@ -63,6 +98,13 @@ const ConfirmPassword = () => {
           Sign Up
         </Button>
       </ScrollView>
+
+      <InfoModal
+        visible={isDialogVisible}
+        message={dialogMessage}
+        type={dialogType}
+        onClose={closeDialog}
+      />
     </View>
   );
 };

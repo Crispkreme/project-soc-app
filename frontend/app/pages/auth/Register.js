@@ -5,30 +5,46 @@ import { useNavigation } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const Register = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', birthday: '' });
-  const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', birthday: '', age: '' });
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
   const navigation = useNavigation();
 
-  const handleInputChange = (field, value) => {
-    setFormData({ ...formData, [field]: value });
+  const calculateAge = (birthdate) => {
+    const today = new Date();
+    const birthDate = new Date(birthdate);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
   };
 
-  const addUser = () => {
-    navigation.navigate('ConfirmPassword');
+  const handleInputChange = (field, value) => {
+    setFormData({ ...formData, [field]: value });
   };
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(false);
     setDate(currentDate);
+
+    const formattedDate = currentDate.toLocaleDateString();
+    const age = calculateAge(currentDate);
+
+    setFormData({ ...formData, birthday: formattedDate, age });
   };
 
   const showDatepicker = () => {
     setShow(true);
   };
 
+  const addUser = () => {
+    navigation.navigate('ConfirmPassword', { formData });
+    // console.log("Form Data Submitted:", formData);
+  };
+  
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -61,7 +77,8 @@ const Register = () => {
           keyboardType="phone-pad"
           style={styles.input}
         />
-        <Text style={styles.dateText}>Selected Date: {date.toLocaleDateString()}</Text>
+        <Text style={styles.dateText}>Selected Date: {formData.birthday}</Text>
+        <Text style={styles.ageText}>Age: {formData.age}</Text>
         <TouchableOpacity onPress={showDatepicker} style={styles.dateButton}>
           <Text style={styles.dateButtonText}>Select Date</Text>
         </TouchableOpacity>
@@ -137,7 +154,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 14,
-    color: '#6B7280', // Gray-500 equivalent
+    color: '#6B7280',
     marginTop: 8,
   },
   scrollContainer: {
@@ -148,10 +165,14 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontSize: 16,
+    marginBottom: 8,
+  },
+  ageText: {
+    fontSize: 16,
     marginBottom: 16,
   },
   dateButton: {
-    backgroundColor: '#3B82F6', // Blue-500 equivalent
+    backgroundColor: '#3B82F6',
     padding: 12,
     borderRadius: 8,
     alignItems: 'center',

@@ -46,7 +46,6 @@ const getUserByAuthToken = async (authToken) => {
     });
 };
 
-// Set up MySQL connection
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -54,29 +53,27 @@ const db = mysql.createConnection({
   database: "project-soc-app",
 });
 
-// Connect to MySQL
 db.connect((err) => {
   if (err) throw err;
   console.log("Connected to MySQL database!");
 });
 
-// Register a user
 app.post("/register", async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, age, phone, birthday } = req.body;
 
-  if (!name || !email || !password) {
-    return res
-      .status(400)
-      .json({ message: "Please provide all required fields" });
+  if (!name || !email || !password || !age || !phone || !birthday) {
+    return res.status(400).json({ message: "Please provide all required fields" });
   }
 
   try {
-    // Hash password before saving to DB
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    const query = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
-    db.query(query, [name, email, hashedPassword], (err, result) => {
+    const query = `
+      INSERT INTO users (name, email, password, age, phone, birthday) 
+      VALUES (?, ?, ?, ?, ?, ?)
+    `;
+    db.query(query, [name, email, hashedPassword, age, phone, birthday], (err, result) => {
       if (err) {
+        console.error(err);
         return res.status(500).json({ message: "Error while inserting user" });
       }
       res.status(201).json({ message: "User created successfully" });
@@ -87,7 +84,6 @@ app.post("/register", async (req, res) => {
   }
 });
 
-// Login a user
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
 
@@ -133,7 +129,6 @@ app.post("/login", (req, res) => {
   });
 });
 
-// Profile
 app.get("/profile/:id", authenticate, (req, res) => {
   const userId = req.params.id;
 
@@ -184,23 +179,18 @@ app.get("/check-login", async (req, res) => {
   });
   
 
-// Fix: Replace connection with db
 app.get("/users", async (req, res) => {
   try {
-    // Wrapping db.query in a Promise for async/await
     const users = await new Promise((resolve, reject) => {
       db.query("SELECT * FROM users", (error, results) => {
         if (error) {
-          return reject(error); // Reject the promise if there's an error
+          return reject(error);
         }
-        resolve(results); // Resolve the promise with the results
+        resolve(results);
       });
     });
 
-    // Log the result of the query
     console.log("Fetched users:", users);
-
-    // Send the response with the users data
     res.json({ success: true, users });
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -208,7 +198,6 @@ app.get("/users", async (req, res) => {
   }
 });
 
-// Delete user endpoint
 app.delete("/delete-user/:id", async (req, res) => {
   try {
     const userId = req.params.id;

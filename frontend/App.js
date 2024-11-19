@@ -21,13 +21,13 @@ export default function App() {
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name="FlashPage" component={FlashPage} options={{ headerShown: false }} />
-                <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
-                <Stack.Screen name="Login" component={Login} />
-                <Stack.Screen name="Register" component={Register} />
-                <Stack.Screen name="ConfirmPassword" component={ConfirmPassword} />
-                <Stack.Screen name="Main" component={Main} />
-                <Stack.Screen name="Appointment" component={Appointment} />
-                <Stack.Screen name="BookAppointment" component={BookAppointment} />
+                <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ headerShown: false }}/>
+                <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
+                <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}/>
+                <Stack.Screen name="ConfirmPassword" component={ConfirmPassword} options={{ headerShown: false }}/>
+                <Stack.Screen name="Main" component={Main} options={{ headerShown: false }}/>
+                <Stack.Screen name="Appointment" component={Appointment} options={{ headerShown: false }}/>
+                <Stack.Screen name="BookAppointment" component={BookAppointment} options={{ headerShown: false }}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

@@ -18,6 +18,7 @@ const BookAppointment = () => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+        
         <SvgXml xml={Logo} width={80} height={80} />
         <Text style={styles.title}>Dr. Dr. Olivia Turner, M.D.</Text>
         <Text style={styles.subtitle}>General Check Up</Text>
@@ -31,10 +32,8 @@ const BookAppointment = () => {
         <Text style={styles.title}>Age: 30</Text>
         <Text style={styles.title}>Gender: Female</Text>
 
-        {/* Event details */}
         <Event event={barangayEvent} />
 
-        {/* Footer */}
         <Footer />
       </ScrollView>
     </View>

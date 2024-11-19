@@ -10,7 +10,7 @@ const FlashPage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.navigate('WelcomeScreen');
-    }, 5000);
+    }, 500);
 
     return () => clearTimeout(timer);
   }, [navigation]);
