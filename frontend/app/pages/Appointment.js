@@ -10,7 +10,9 @@ import Event from '../components/Event';
 
 const screenWidth = Dimensions.get('window').width;
 
-const Appointment = () => {
+const Appointment = ({ route }) => {
+
+  const { user } = route.params;
   const navigation = useNavigation();
 
   const [formData, setFormData] = useState({
@@ -71,7 +73,7 @@ const Appointment = () => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-        <Header />
+        <Header user={user}/>
 
         <Calendar dates={dates} />
 

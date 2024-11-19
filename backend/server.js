@@ -88,44 +88,47 @@ app.post("/login", (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res
-      .status(400)
-      .json({ message: "Please provide both email and password" });
+    return res.status(400).json({ message: "Please provide both email and password" });
   }
 
   const query = "SELECT * FROM users WHERE email = ?";
+
   db.query(query, [email], async (err, result) => {
     if (err) {
+      console.error(err);
       return res.status(500).json({ message: "Database query error" });
     }
 
     if (result.length === 0) {
-      return res
-        .status(400)
-        .json({ success: false, message: "User not found" });
+      return res.status(400).json({ success: false, message: "User not found" });
     }
 
-    const user = result[0]; // Get the first result
+    const user = result[0];
 
-    // Compare the password with the stored hashed password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid credentials" });
+    try {
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ success: false, message: "Invalid credentials" });
+      }
+
+      const token = `${user.id}:${new Date().getTime()}`;
+
+      res.cookie("auth_token", token, {
+        httpOnly: true,
+        secure: false,
+        maxAge: 3600000,
+      });
+
+      return res.json({
+        success: true,
+        message: "Login successful",
+        user: user,
+        token,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Error during password validation" });
     }
-
-    // Generate a simple token (or use user ID, timestamp, etc.)
-    const token = `${user.id}:${new Date().getTime()}`;
-
-    // Set token in HTTP-only cookie (for security)
-    res.cookie("auth_token", token, {
-      httpOnly: true, // Ensures the cookie cannot be accessed via JavaScript
-      secure: false, // Set to true if using HTTPS
-      maxAge: 3600000, // Expires in 1 hour
-    });
-
-    return res.json({ success: true, message: "Login successful" });
   });
 });
 

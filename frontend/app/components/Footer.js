@@ -3,10 +3,10 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-const Footer = () => {
+const Footer = ({ user }) => {
   const navigation = useNavigation(); 
   const handleCalendarClick = () => {
-    navigation.navigate('Appointment');
+    navigation.navigate('Main', { user: user });
   };
 
   return (

@@ -2,22 +2,51 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { TextInput, Button, IconButton, TouchableRipple } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import InfoModal from '../../components/InfoModal';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
+  const [isDialogVisible, setDialogVisible] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState('');
+  const [dialogType, setDialogType] = useState('success');
+
   const navigation = useNavigation();
 
   const handleInputChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
   };
 
-  const addUser = () => {
-    if (formData.email && formData.password) {
-      console.log('Logged in:', formData);
-      navigation.navigate('Main');
-    } else {
-      alert('Please fill in all fields.');
+  const loginSubmit = async () => {
+    if (!formData.email || !formData.password) {
+      setDialogMessage('Please fill in both email and password.');
+      setDialogType('error');
+      setDialogVisible(true);
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://10.0.120.55:3000/login', {
+        email: formData.email,
+        password: formData.password,
+      });
+
+      setDialogMessage(`Welcome, ${response.data.user.name}!`);
+      setDialogType('success');
+      setDialogVisible(true);
+
+      setTimeout(() => {
+        setDialogVisible(false);
+        navigation.navigate('Main', { user: response.data.user });
+      }, 2000);
+
+    } catch (error) {
+
+      const errorMessage = error.response?.data?.message || 'Failed to log in. Please try again.';
+      setDialogMessage(errorMessage);
+      setDialogType('error');
+      setDialogVisible(true);
     }
   };
 
@@ -58,7 +87,7 @@ const Login = () => {
           <Text style={styles.forgotPassword}>Forget Password?</Text>
         </TouchableRipple>
 
-        <Button mode="contained" onPress={addUser} style={styles.submitButton}>
+        <Button mode="contained" onPress={loginSubmit} style={styles.submitButton}>
           Submit
         </Button>
 
@@ -89,6 +118,14 @@ const Login = () => {
           <Text style={styles.registerText}>Don’t have an account? Sign Up</Text>
         </TouchableRipple>
       </ScrollView>
+
+      {/* InfoModal for Success/Error messages */}
+      <InfoModal
+        visible={isDialogVisible}
+        message={dialogMessage}
+        type={dialogType} // 'success' or 'error'
+        onClose={() => setDialogVisible(false)}
+      />
     </View>
   );
 };

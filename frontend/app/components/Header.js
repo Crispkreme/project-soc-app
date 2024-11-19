@@ -4,7 +4,7 @@ import { SvgXml } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Logo from '../../assets/Logo.svg';
 
-const Header = () => {
+const Header = ({ user }) => {
 
   const [formData, setFormData] = useState({ search: '' });
   const handleInputChange = (field, value) => {
@@ -19,7 +19,7 @@ const Header = () => {
                 <SvgXml xml={Logo} width={80} height={80} />
                 </View>
                 <Text style={styles.title}>Hi, Welcome Back</Text>
-                <Text style={styles.subtitle}>John Doe</Text>
+                <Text style={styles.subtitle}>{user.name}</Text>
             </View>
             <View style={styles.buttonGroup}>
                 <TouchableOpacity style={styles.button}>
